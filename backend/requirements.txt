@@ -1,0 +1,11 @@
+Django
+djangorestframework
+djangorestframework-simplejwt
+django-cors-headers
+python-dotenv
+google-genai
+requests
+gunicorn
+whitenoise
+dj-database-url
+psycopg2-binary

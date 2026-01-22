@@ -1,0 +1,369 @@
+:root {
+  --bg: #0b1020;
+  --panel: rgba(255, 255, 255, 0.06);
+  --panel2: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.12);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.62);
+  --muted2: rgba(255, 255, 255, 0.48);
+  --accent: #7c5cff;
+  --accent2: #2dd4bf;
+  --danger: #ff5c7a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background: radial-gradient(1200px 800px at 10% 10%, rgba(124, 92, 255, 0.22), transparent 55%),
+    radial-gradient(900px 700px at 90% 15%, rgba(45, 212, 191, 0.18), transparent 55%),
+    radial-gradient(900px 700px at 50% 100%, rgba(255, 92, 122, 0.12), transparent 55%),
+    var(--bg);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 18px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(10px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brandMark {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.9), rgba(45, 212, 191, 0.75));
+  font-weight: 800;
+}
+
+.brandTitle {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.brandSub {
+  font-size: 12px;
+  color: var(--muted2);
+  margin-top: 2px;
+}
+
+.topbarRight {
+  display: flex;
+  gap: 10px;
+}
+
+.grid {
+  width: min(1160px, calc(100% - 28px));
+  margin: 18px auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 980px) {
+  .grid {
+    grid-template-columns: 1.05fr 1.2fr 1.15fr;
+    align-items: start;
+  }
+}
+
+.card {
+  background: linear-gradient(180deg, var(--panel), rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.cardTitle {
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.cardHint {
+  color: var(--muted2);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.formRow {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px 11px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--text);
+  outline: none;
+}
+
+input:focus,
+select:focus {
+  border-color: rgba(124, 92, 255, 0.6);
+  box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.12);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.primaryBtn,
+.ghostBtn {
+  border-radius: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.primaryBtn {
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.95), rgba(124, 92, 255, 0.55));
+  border-color: rgba(124, 92, 255, 0.6);
+  font-weight: 700;
+}
+
+.primaryBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ghostBtn {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ghostBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.meta {
+  color: var(--muted2);
+  font-size: 12px;
+}
+
+.miniInfo {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  display: grid;
+  gap: 6px;
+}
+
+.miniInfo .k {
+  color: var(--muted2);
+  font-size: 12px;
+  margin-right: 8px;
+}
+
+.miniInfo .v {
+  font-weight: 600;
+}
+
+.table {
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.thead,
+.trow {
+  display: grid;
+  grid-template-columns: 1.2fr 0.9fr 0.9fr 0.9fr;
+  gap: 8px;
+  align-items: center;
+}
+
+.thead {
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.trow {
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+}
+
+.subjectCell {
+  font-weight: 700;
+}
+
+.num {
+  text-align: right;
+}
+
+.empty,
+.emptySmall {
+  color: var(--muted);
+  padding: 10px 0;
+}
+
+.emptySmall {
+  font-size: 13px;
+}
+
+.pillRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.pill {
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.pillLabel {
+  font-size: 12px;
+  color: var(--muted2);
+}
+
+.pillValue {
+  margin-top: 6px;
+  font-weight: 800;
+}
+
+.sectionTitle {
+  margin-top: 14px;
+  font-weight: 800;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.nets {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.netCard {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.netSubject {
+  font-size: 12px;
+  color: var(--muted2);
+}
+
+.netValue {
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.weak {
+  margin-top: 10px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.weakRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.weakRow:first-child {
+  border-top: none;
+}
+
+.weakLeft {
+  font-weight: 700;
+}
+
+.weakRight {
+  font-weight: 900;
+}
+
+.recs {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: rgba(255, 255, 255, 0.86);
+  line-height: 1.45;
+}
+
+.errorCard {
+  border-color: rgba(255, 92, 122, 0.6);
+  background: linear-gradient(180deg, rgba(255, 92, 122, 0.12), rgba(255, 255, 255, 0.03));
+}
+
+.errorText {
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.footer {
+  width: min(1160px, calc(100% - 28px));
+  margin: 6px auto 18px;
+  color: var(--muted2);
+  font-size: 12px;
+}

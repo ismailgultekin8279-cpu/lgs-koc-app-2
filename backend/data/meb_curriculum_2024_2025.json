@@ -1,0 +1,42 @@
+{
+  "source": "MEB",
+  "version": "2024-2025",
+  "grades": [
+    {
+      "grade": 6,
+      "subjects": [
+        {
+          "name": "Matematik",
+          "topics": [
+            { "order": 1, "name": "Doğal Sayılar" },
+            { "order": 2, "name": "Çarpanlar ve Katlar" }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "subjects": [
+        {
+          "name": "Türkçe",
+          "topics": [
+            { "order": 1, "name": "Sözcükte Anlam" },
+            { "order": 2, "name": "Cümlede Anlam" }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "subjects": [
+        {
+          "name": "Fen Bilimleri",
+          "topics": [
+            { "order": 1, "name": "DNA ve Genetik Kod" },
+            { "order": 2, "name": "Basınç" }
+          ]
+        }
+      ]
+    }
+  ]
+}

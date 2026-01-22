@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #3b82f6; /* Blue 500 */
+  --color-primary-dark: #1e3a8a; /* Blue 900 */
+  --color-secondary: #0d9488; /* Teal 600 */
+  --color-accent: #f97316; /* Orange 500 */
+  
+  --font-sans: 'Inter', system-ui, sans-serif;
+  
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-slide-up: slide-up 0.5s ease-out;
+  
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+}
+
+/* Global Styles */
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-800 antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+@layer components {
+  /* Glassmorphism Utilities */
+  .glass {
+    @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-xl;
+  }
+  
+  .glass-card {
+    @apply rounded-2xl bg-white/80 backdrop-blur-md border border-slate-200/50 shadow-sm transition-all duration-300 hover:shadow-md hover:border-blue-200/50;
+  }
+  
+  .btn-primary {
+    @apply relative overflow-hidden rounded-full bg-linear-to-r from-blue-600 to-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] hover:shadow-blue-500/40 active:scale-95;
+  }
+  
+  .btn-ghost {
+    @apply rounded-full px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900;
+  }
+
+  .input-modern {
+    @apply w-full rounded-xl border-none bg-slate-100 px-4 py-3 text-sm font-medium text-slate-900 shadow-inner transition-all placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-blue-500/20;
+  }
+}
