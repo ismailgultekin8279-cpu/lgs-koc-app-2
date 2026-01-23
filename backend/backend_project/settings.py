@@ -24,15 +24,14 @@ load_dotenv(BASE_DIR / '.env')
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*c+h)sl3jc1#_4#b%$j=7gxmc)#f+opbug&*cm)2ilr+$$xbui'
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-*c+h)sl3jc1#_4#b%$j=7gxmc)#f+opbug&*cm)2ilr+$$xbui')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['*'] # For now allow all, secure later
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -144,10 +143,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # AI Configuration
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
+CORS_ALLOW_ALL_ORIGINS = True # Allow all for now to unblock deployment
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": (
         "students.api.renderers.UTF8JSONRenderer",
