@@ -1,6 +1,5 @@
-// Use relative path so it works both in dev (with proxy) and prod (same domain)
-// OR check environment. For this "One Container" setup, relative /api/v1 is best.
-const BASE_URL = '/api/v1';
+// Use env var for production, fallback to relative path for dev proxy
+const BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
 
 const getHeaders = () => {
     const headers = { 'Content-Type': 'application/json' };

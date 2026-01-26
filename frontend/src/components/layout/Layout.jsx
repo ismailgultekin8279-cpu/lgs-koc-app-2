@@ -71,7 +71,9 @@ export default function Layout({ children }) {
           <div className="p-4 rounded-2xl bg-linear-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/25">
             <p className="text-xs font-medium opacity-80 mb-1">Hedefine Kalan</p>
             <div className="flex items-end justify-between">
-              <span className="text-2xl font-bold">142 Gün</span>
+              <span className="text-2xl font-bold">
+                {Math.ceil((new Date('2026-06-07') - new Date()) / (1000 * 60 * 60 * 24))} Gün
+              </span>
               <span className="text-xs bg-white/20 px-2 py-1 rounded-lg">LGS 2026</span>
             </div>
           </div>

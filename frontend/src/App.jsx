@@ -1,32 +1,51 @@
-﻿import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Dashboard from './pages/Dashboard';
-import ExamEntryPage from './pages/ExamEntryPage';
-import OnboardingPage from './pages/OnboardingPage';
+﻿import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
-import { StudentProvider, useStudent } from './context/StudentContext';
+import Dashboard from './pages/Dashboard';
+import StudentDashboard from './pages/StudentDashboard';
+import CoachDashboard from './pages/CoachDashboard';
+import OnboardingPage from './pages/OnboardingPage';
+import ExamEntryPage from './pages/ExamEntryPage';
+import ExamResultsPage from './pages/ExamResultsPage';
+import SettingsPage from './pages/SettingsPage';
+import Layout from './components/layout/Layout';
 
-function PrivateRoute({ children }) {
-  const { student, loading } = useStudent();
-  if (loading) return <div>Yükleniyor...</div>;
-  if (!student) return <Navigate to="/login" />;
-  return children;
-}
+// Layout wrapper to adapt 'children' prop to 'Outlet' pattern
+const LayoutWrapper = () => {
+  return (
+    <Layout>
+      <Outlet />
+    </Layout>
+  );
+};
 
 function App() {
   return (
-    <StudentProvider>
-      <BrowserRouter>
-        <Routes>
+    <Router>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/login" element={<LoginPage />} />
+
+        {/* Protected/Layout Routes */}
+        <Route element={<LayoutWrapper />}>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/student-dashboard" element={<StudentDashboard />} />
+          <Route path="/plan" element={<StudentDashboard />} />
+          <Route path="/coach-dashboard" element={<CoachDashboard />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-          <Route path="/plan" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-          <Route path="/exams" element={<PrivateRoute><ExamEntryPage /></PrivateRoute>} />
-          <Route path="/analytics" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-          <Route path="/settings" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-        </Routes>
-      </BrowserRouter>
-    </StudentProvider>
+          <Route path="/exams" element={<ExamEntryPage />} />
+          <Route path="/analytics" element={<ExamResultsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+
+          {/* Legacy/Duplicate Routes Handling */}
+          <Route path="/exam-entry" element={<Navigate to="/exams" replace />} />
+        </Route>
+
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </Router>
   );
 }
 

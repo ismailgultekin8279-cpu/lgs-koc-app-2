@@ -1,4 +1,4 @@
-import Layout from '../components/layout/Layout';
+
 import { CheckCircle2, Trophy, Target, ArrowUpRight } from 'lucide-react';
 import { useStudent } from '../context/StudentContext';
 import { api } from '../services/api';
@@ -97,7 +97,7 @@ export default function Dashboard() {
     };
 
     return (
-        <Layout>
+        <div className="max-w-6xl mx-auto space-y-8">
             <div className="mb-8">
                 <h1 className="text-3xl font-bold text-slate-900">Hoş geldin, {student?.full_name || 'Öğrenci'}! 👋</h1>
                 <p className="text-slate-500 mt-2">Bugünün hedeflerini tamamla ve hedefine bir adım daha yaklaş.</p>
@@ -108,7 +108,8 @@ export default function Dashboard() {
                     icon={Target}
                     label="Hedef Puan"
                     value={student?.target_score || '---'}
-                    trend="Hedefe %92 Ulaşıldı"
+                    // Estimate Score based on Net (Approx 1 net = 4.0 points + base 100-200) - Simplified for visual
+                    trend={`Hedefe %${student?.target_score > 0 ? Math.min(100, Math.round(((parseFloat(latestNet) * 4.2 + 150) / student.target_score) * 100)) : 0} Ulaşıldı`}
                     trendUp={true}
                     color="bg-purple-600"
                 />
@@ -156,7 +157,7 @@ export default function Dashboard() {
                                 </button>
                             </div>
                         ) : (
-                            todaysTasks.slice(0, 3).map((task) => (
+                            todaysTasks.map((task) => (
                                 <div
                                     key={task.id}
                                     className={`flex items-center gap-4 p-4 rounded-xl border transition-all cursor-pointer hover:shadow-md ${task.status === 'done'
@@ -204,9 +205,11 @@ export default function Dashboard() {
                             {coachMessage ? coachMessage.text : "Verilerini analiz ediyorum..."}
                         </p>
 
-                        <button className="w-full py-3 rounded-xl bg-white text-indigo-900 font-bold hover:bg-indigo-50 transition-colors">
-                            {coachMessage ? coachMessage.action : "Bekleyiniz"}
-                        </button>
+                        <Link to="/plan" className="block w-full">
+                            <button className="w-full py-3 rounded-xl bg-white text-indigo-900 font-bold hover:bg-indigo-50 transition-colors">
+                                {coachMessage ? coachMessage.action : "Bekleyiniz"}
+                            </button>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -219,6 +222,6 @@ export default function Dashboard() {
                 </div>
                 <NetScoreChart data={examHistory} />
             </div>
-        </Layout>
+        </div>
     );
 }

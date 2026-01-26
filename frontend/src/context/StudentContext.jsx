@@ -12,18 +12,24 @@ export function StudentProvider({ children }) {
     }, []);
 
     const checkAuth = async () => {
+        console.log("StudentContext: Checking auth...");
         const token = localStorage.getItem('access_token');
         const savedStudent = localStorage.getItem('student_data');
+        console.log("StudentContext: Token found?", !!token);
 
         if (token && savedStudent) {
             try {
                 setStudent(JSON.parse(savedStudent));
+                console.log("StudentContext: User restored from local storage");
             } catch (err) {
                 console.error('Failed to parse student data', err);
                 logout();
             }
+        } else {
+            console.log("StudentContext: No token/student found.");
         }
         setLoading(false);
+        console.log("StudentContext: Loading set to false");
     };
 
     const login = (authData) => {
@@ -42,6 +48,7 @@ export function StudentProvider({ children }) {
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('student_data');
         localStorage.removeItem('student_id'); // Clear legacy
+        window.location.href = '/login';
     };
 
     return (

@@ -37,35 +37,53 @@ class AICoachingService:
             return self._generate_fallback_response(context, target_date)
 
     def _generate_fallback_response(self, context, target_date):
-        # A smart fallback that looks like AI
+        # A smart fallback that looks like AI but rotates subjects
         import random
         
-        weak_subject = context['weak_subjects'][0] if context['weak_subjects'] else "Matematik"
+        weak_subjects = context.get('weak_subjects', [])
+        # Ensure we have a list
+        if not weak_subjects:
+            weak_subjects = ["Matematik"]
+            
+        fallback_tasks = []
         
-        fallback_tasks = [
-            {
-                "subject": weak_subject,
-                "topic": f"{weak_subject} - Yeni Nesil Soru Çözümü",
-                "task_type": "practice",
+        # 1. Try to pick up to 3 distinct weak subjects
+        # If we have 3 or more weak subjects, take top 3
+        # If fewer, take all of them
+        selected_weaknesses = weak_subjects[:3]
+        
+        # Add tasks for these weaknesses
+        for subject in selected_weaknesses:
+            fallback_tasks.append({
+                "subject": subject,
+                "topic": f"{subject} - Eksik Konu Tamamlama",
+                "task_type": "remediation",
                 "question_count": 25,
-                "duration_minutes": 40
-            },
-            {
-                "subject": "Türkçe",
-                "topic": "Paragraf Taktikleri ve Hız Denemesi",
+                "duration_minutes": 45
+            })
+            
+        # 2. If we still need more tasks to reach 3, fill with other subjects
+        other_subjects = ["Türkçe", "Fen Bilimleri", "İnkılap", "İngilizce", "Matematik"]
+        
+        while len(fallback_tasks) < 3:
+            # Pick a random subject not already in our list
+            existing_subjects = [t['subject'] for t in fallback_tasks]
+            candidates = [s for s in other_subjects if s not in existing_subjects]
+            
+            if not candidates:
+                 # Should rarely happen unless pool is small; just pick any
+                 fill_subj = random.choice(other_subjects)
+            else:
+                 fill_subj = random.choice(candidates)
+            
+            fallback_tasks.append({
+                "subject": fill_subj,
+                "topic": f"{fill_subj} - Genel Tekrar ve Soru Çözümü",
                 "task_type": "practice",
                 "question_count": 20,
                 "duration_minutes": 30
-            },
-            {
-                "subject": "Fen Bilimleri",
-                "topic": "Mevsimler ve İklim - Kritik Tekrar",
-                "task_type": "review",
-                "question_count": 15,
-                "duration_minutes": 25
-            }
-        ]
-        
+            })
+            
         return self._parse_and_save_tasks({"tasks": fallback_tasks}, target_date)
 
     def _build_prompt(self, context, target_date):

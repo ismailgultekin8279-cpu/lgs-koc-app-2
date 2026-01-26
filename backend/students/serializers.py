@@ -45,3 +45,14 @@ class ExamResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExamResult
         fields = '__all__'
+
+class ExamResultItemSerializer(serializers.Serializer):
+    subject = serializers.CharField(max_length=64)
+    correct = serializers.IntegerField(min_value=0)
+    wrong = serializers.IntegerField(min_value=0)
+    blank = serializers.IntegerField(min_value=0)
+
+class ExamResultsBulkUpsertSerializer(serializers.Serializer):
+    student = serializers.IntegerField()
+    exam_date = serializers.DateField()
+    results = ExamResultItemSerializer(many=True)

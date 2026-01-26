@@ -109,6 +109,40 @@ class ExamResultViewSet(viewsets.ModelViewSet):
             qs = qs.order_by('-exam_date')
             
         return qs
+    
+    @action(detail=False, methods=["post"], url_path="bulk-upsert")
+    def bulk_upsert(self, request):
+        from django.db import transaction
+        from .serializers import ExamResultsBulkUpsertSerializer
+
+        serializer = ExamResultsBulkUpsertSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        student_id = data["student"]
+        exam_date = data["exam_date"]
+        results = data["results"]
+
+        with transaction.atomic():
+            for item in results:
+                ExamResult.objects.update_or_create(
+                    student_id=student_id,
+                    exam_date=exam_date,
+                    subject=item["subject"],
+                    defaults={
+                        "correct": item["correct"],
+                        "wrong": item["wrong"],
+                        "blank": item["blank"],
+                        # net field computes itself on save if not provided, or we can compute it here.
+                        # model save() method doesn't compute net automatically if inputs are provided?
+                        # Model doesn't have compute method in save. Let's compute it quickly or let frontend send it.
+                        # Wait, model definition has net field. Let's compute it.
+                        "net": max(0, item["correct"] - (item["wrong"] / 3.0)) 
+                    },
+                )
+
+        qs = ExamResult.objects.filter(student_id=student_id, exam_date=exam_date).order_by("subject")
+        return Response(ExamResultSerializer(qs, many=True).data, status=status.HTTP_200_OK)
 
 def start_session(request):
     student_id = request.GET.get("student_id")

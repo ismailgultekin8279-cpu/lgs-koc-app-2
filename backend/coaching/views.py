@@ -35,7 +35,18 @@ class CoachingViewSet(viewsets.GenericViewSet):
         service = CoachingService(student)
         weaknesses = service._analyze_weaknesses()
         
+        # Simple dynamic message logic
+        if not weaknesses:
+            msg = "Harika gidiyorsun! Hiçbir eksiğin görünmüyor. Rutin tekrarlara devam et."
+        else:
+            top_weakness = weaknesses[0]
+            if len(weaknesses) > 1:
+                msg = f"{top_weakness} ve {weaknesses[1]} derslerinde eksiklerin var. Bugün bunlara odaklanalım."
+            else:
+                msg = f"{top_weakness} dersinde biraz eksiğin var. Bugün bu konuyu halledelim."
+
         return Response({
             "weaknesses": weaknesses,
-            "config": CoachingConfigSerializer(student.coaching_config).data
+            "config": CoachingConfigSerializer(student.coaching_config).data,
+            "message": msg
         })

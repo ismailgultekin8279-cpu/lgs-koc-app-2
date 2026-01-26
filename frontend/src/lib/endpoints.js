@@ -21,37 +21,29 @@ export function patchStudent(studentId, payload) {
   return apiPatch(`/students/${studentId}/`, payload);
 }
 
-/* ---------------- Daily Plan ----------------
-   CoachDashboard şu fonksiyonu çağırıyor: getDailyPlan(studentId)
-   Backend’de endpointin hangisi olduğuna göre aşağıdaki path’i gerekirse değiştiririz.
-*/
+/* ---------------- Daily Plan ---------------- */
 export function getDailyPlan(studentId) {
-  // Eğer sende endpoint farklıysa burayı 1 satır değiştiririz.
-  // Sık kullanılan örnekler:
-  // return apiGet(`/students/${studentId}/daily-plan/`);
-  // return apiGet(`/daily-plans/?student=${studentId}`);
-  return apiGet(`/students/${studentId}/daily-plan/`);
+  // Use the standard task filtering endpoint
+  // Takes query params: student (ID) and optional date
+  const today = new Date().toISOString().split('T')[0];
+  // Adding /v1 prefix as per api.js pattern
+  return apiGet(`/v1/students/tasks/?student=${studentId}&date=${today}`);
 }
 
 /* ---------------- Tasks ---------------- */
 export function patchTask(taskId, payload) {
-  return apiPatch(`/tasks/${taskId}/`, payload);
+  return apiPatch(`/v1/students/tasks/${taskId}/`, payload);
 }
 
-/* ---------------- Coaching ----------------
-   StudentDashboard konsolda bunu istiyor: getCoaching
-*/
+/* ---------------- Coaching ---------------- */
 export function getCoaching(studentId) {
-  // Backend’de varsa çalışır; yoksa 404 döner ama artık "export yok" hatası biter.
-  return apiGet(`/students/${studentId}/coaching/`);
+  // Use the working endpoint from api.js logic
+  return apiGet(`/v1/coaching/coach/${studentId}/status/`);
 }
 
-/* ---------------- Exam Results ----------------
-   Senin backend’de çalışan endpoint:
-   POST /api/exam-results/bulk-upsert/
-*/
+/* ---------------- Exam Results ---------------- */
 export function bulkUpsertExamResults(payload) {
-  return apiPost(`/exam-results/bulk-upsert/`, payload);
+  return apiPost(`/v1/students/exam-results/bulk-upsert/`, payload);
 }
 
 /**
