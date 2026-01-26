@@ -27,23 +27,23 @@ export function getDailyPlan(studentId) {
   // Takes query params: student (ID) and optional date
   const today = new Date().toISOString().split('T')[0];
   // Adding /v1 prefix as per api.js pattern
-  return apiGet(`/v1/students/tasks/?student=${studentId}&date=${today}`);
+  return apiGet(`/students/tasks/?student=${studentId}&date=${today}`);
 }
 
 /* ---------------- Tasks ---------------- */
 export function patchTask(taskId, payload) {
-  return apiPatch(`/v1/students/tasks/${taskId}/`, payload);
+  return apiPatch(`/students/tasks/${taskId}/`, payload);
 }
 
 /* ---------------- Coaching ---------------- */
 export function getCoaching(studentId) {
   // Use the working endpoint from api.js logic
-  return apiGet(`/v1/coaching/coach/${studentId}/status/`);
+  return apiGet(`/coaching/coach/${studentId}/status/`);
 }
 
 /* ---------------- Exam Results ---------------- */
 export function bulkUpsertExamResults(payload) {
-  return apiPost(`/v1/students/exam-results/bulk-upsert/`, payload);
+  return apiPost(`/students/exam-results/bulk-upsert/`, payload);
 }
 
 /**
