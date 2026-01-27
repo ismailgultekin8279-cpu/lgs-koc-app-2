@@ -51,8 +51,20 @@ export function StudentProvider({ children }) {
         window.location.href = '/login';
     };
 
+    const refreshStudent = async () => {
+        if (!student?.id) return;
+        try {
+            const updated = await api.getStudent(student.id);
+            setStudent(updated);
+            localStorage.setItem('student_data', JSON.stringify(updated));
+            console.log("StudentContext: Student data refreshed");
+        } catch (err) {
+            console.error("Failed to refresh student data", err);
+        }
+    };
+
     return (
-        <StudentContext.Provider value={{ student, loading, login, logout }}>
+        <StudentContext.Provider value={{ student, loading, login, logout, refreshStudent }}>
             {children}
         </StudentContext.Provider>
     );

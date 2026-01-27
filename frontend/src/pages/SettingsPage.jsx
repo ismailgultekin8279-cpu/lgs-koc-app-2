@@ -5,7 +5,7 @@ import { useStudent } from "../context/StudentContext";
 import { Card, CardHeader, CardBody } from "../components/Card";
 
 export default function SettingsPage() {
-    const { student, logout } = useStudent();
+    const { student, logout, refreshStudent } = useStudent();
     const [formData, setFormData] = useState({
         full_name: "",
         target_score: "",
@@ -29,16 +29,11 @@ export default function SettingsPage() {
         setLoading(true);
         setMessage(null);
         try {
-            // Assuming we have an endpoint to update student profile
-            // If not, we might need to add it or this will fail.
-            // For now, let's simulate a success or add a TODO to backend.
-
-            // await api.updateProfile(student.id, formData); 
-
-            // As fallback since we didn't check backend for update endpoint:
-            await new Promise(r => setTimeout(r, 800)); // Fake delay
-            setMessage({ type: "success", text: "Profil bilgileri güncellendi! (Simülasyon)" });
+            await api.updateStudent(student.id, formData);
+            await refreshStudent();
+            setMessage({ type: "success", text: "Profil bilgileri güncellendi!" });
         } catch (err) {
+            console.error(err);
             setMessage({ type: "error", text: "Güncelleme başarısız oldu." });
         } finally {
             setLoading(false);

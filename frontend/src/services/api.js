@@ -42,6 +42,16 @@ export const api = {
         return res.json();
     },
 
+    updateStudent: async (id, data) => {
+        const res = await fetch(`${BASE_URL}/students/${id}/`, {
+            method: 'PATCH',
+            headers: getHeaders(),
+            body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error('Failed to update student');
+        return res.json();
+    },
+
     // Exams
     saveExamResult: async (data) => {
         const res = await fetch(`${BASE_URL}/students/exam-results/`, {
