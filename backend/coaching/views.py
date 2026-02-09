@@ -74,6 +74,7 @@ class CoachingViewSet(viewsets.GenericViewSet):
             current_focus = f"{month_name} {config.current_academic_week}. Hafta"
 
         return Response({
+            "version": "2.0.1-fixed",
             "weaknesses": weaknesses,
             "weights": weights,  # Include weights for frontend transparency
             "config": CoachingConfigSerializer(student.coaching_config).data,
