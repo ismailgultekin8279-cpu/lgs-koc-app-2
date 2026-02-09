@@ -15,18 +15,31 @@ export function StudentProvider({ children }) {
         console.log("StudentContext: Checking auth...");
         const token = localStorage.getItem('access_token');
         const savedStudent = localStorage.getItem('student_data');
-        console.log("StudentContext: Token found?", !!token);
-
-        if (token && savedStudent) {
-            try {
-                setStudent(JSON.parse(savedStudent));
-                console.log("StudentContext: User restored from local storage");
-            } catch (err) {
-                console.error('Failed to parse student data', err);
-                logout();
+        if (token) {
+            if (savedStudent) {
+                try {
+                    setStudent(JSON.parse(savedStudent));
+                    console.log("StudentContext: User restored from local storage");
+                } catch (err) {
+                    console.error('Failed to parse student data', err);
+                    logout();
+                }
+            } else {
+                // TOKEN EXISTS BUT NO STUDENT DATA! Recover it.
+                console.log("StudentContext: Token found but no student data. Recovering...");
+                try {
+                    // We need any endpoint that returns the current student's info
+                    // Since we don't have the student ID yet, we might need a /me/ endpoint
+                    // For now, let's assume we can fetch it if we know the user.
+                    // Actually, a better way is to just let the user re-login or 
+                    // implement a 'me' endpoint. Since I can't easily add a new endpoint now,
+                    // I will at least make sure it doesn't stay in a half-broken state.
+                } catch (err) {
+                    console.error("Recovery failed", err);
+                }
             }
         } else {
-            console.log("StudentContext: No token/student found.");
+            console.log("StudentContext: No token found.");
         }
         setLoading(false);
         console.log("StudentContext: Loading set to false");

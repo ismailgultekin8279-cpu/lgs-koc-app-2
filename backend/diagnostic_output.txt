@@ -1,0 +1,58 @@
+=== DETAILED AUDIT FOR STUDENT 10 ===
+CURRENT CONFIG: Month 9, Week 1
+
+Topics in Week 9W1: 42
+Completed in Week: 1
+
+STILL PENDING IN THIS WEEK:
+  - [Fen Bilimleri] ID:2710 Order:0 Title:Mevsimlerin Oluşumu (Eylül 1.Hafta)
+  - [Türkçe] ID:2990 Order:0 Title:Paragraf Yorumlama (Eylül 1.Hafta)
+  - [T.C. İnkılap Tarihi] ID:3270 Order:0 Title:Kronolojik Analiz Becerisi (Eylül 1.Hafta)
+  - [Yabancı Dil] ID:3550 Order:0 Title:Vocabulary Builder (Eylül 1.Hafta)
+  - [Din Kültürü] ID:3830 Order:0 Title:Kader İnancı (Eylül 1.Hafta)
+  - [Matematik] ID:2431 Order:1 Title:Asal Çarpanlara Ayırma (Eylül 1.Hafta)
+  - [Fen Bilimleri] ID:2711 Order:1 Title:Bilimsel Muhakeme Becerisi (Eylül 1.Hafta)
+  - [Türkçe] ID:2991 Order:1 Title:Sözel Mantık Becerisi (Eylül 1.Hafta)
+  - [T.C. İnkılap Tarihi] ID:3271 Order:1 Title:Harita ve Görsel Yorumlama (Eylül 1.Hafta)
+  - [Yabancı Dil] ID:3551 Order:1 Title:Reading Comprehension (Eylül 1.Hafta)
+  - [Din Kültürü] ID:3831 Order:1 Title:Zekat ve Sadaka (Eylül 1.Hafta)
+  - [Matematik] ID:2432 Order:2 Title:Temel İşlem Yeteneği (Eylül 1.Hafta)
+  - [Fen Bilimleri] ID:2712 Order:2 Title:Deney Analizi ve Yorumlama (Eylül 1.Hafta)
+  - [Türkçe] ID:2992 Order:2 Title:Okuma Anlama (Eylül 1.Hafta)
+  - [T.C. İnkılap Tarihi] ID:3272 Order:2 Title:Bir Kahraman Doğuyor (Eylül 1.Hafta)
+  - [Yabancı Dil] ID:3552 Order:2 Title:Grammar Review (Eylül 1.Hafta)
+  - [Din Kültürü] ID:3832 Order:2 Title:Din ve Hayat (Eylül 1.Hafta)
+  - [Matematik] ID:2433 Order:3 Title:Mantık Muhakeme (Eylül 1.Hafta)
+  - [Fen Bilimleri] ID:2713 Order:3 Title:Fen Bilimleri Yeni Nesil Soru (Eylül 1.Hafta)
+  - [Türkçe] ID:2993 Order:3 Title:Sözcükte Anlam (Eylül 1.Hafta)
+  - [T.C. İnkılap Tarihi] ID:3273 Order:3 Title:Milli Uyanış (Eylül 1.Hafta)
+  - [Yabancı Dil] ID:3553 Order:3 Title:English Practice (Eylül 1.Hafta)
+  - [Din Kültürü] ID:3833 Order:3 Title:Hz Muhammedin Örneklik (Eylül 1.Hafta)
+  - [Matematik] ID:2434 Order:4 Title:Sayısal Analiz Becerisi (Eylül 1.Hafta)
+  - [Fen Bilimleri] ID:2714 Order:4 Title:Kavram Haritası Çalışması (Eylül 1.Hafta)
+  - [Türkçe] ID:2994 Order:4 Title:Yazım ve Noktalama (Eylül 1.Hafta)
+  - [T.C. İnkılap Tarihi] ID:3274 Order:4 Title:Milli Destan (Eylül 1.Hafta)
+  - [Yabancı Dil] ID:3554 Order:4 Title:Word Association (Eylül 1.Hafta)
+  - [Din Kültürü] ID:3834 Order:4 Title:Kuran ve Özellikleri (Eylül 1.Hafta)
+  - [Matematik] ID:2435 Order:5 Title:Problem Çözme Stratejileri (Eylül 1.Hafta)
+  - [Fen Bilimleri] ID:2715 Order:5 Title:Fen Bilimleri Hız Testi (Eylül 1.Hafta)
+  - [Türkçe] ID:2995 Order:5 Title:Cümlede Anlam (Eylül 1.Hafta)
+  - [T.C. İnkılap Tarihi] ID:3275 Order:5 Title:Atatürkçülük ve İnkılaplar (Eylül 1.Hafta)
+  - [Yabancı Dil] ID:3555 Order:5 Title:Translation Exercises (Eylül 1.Hafta)
+  - [Din Kültürü] ID:3835 Order:5 Title:Ahlaki Tutumlar (Eylül 1.Hafta)
+  - [Matematik] ID:2436 Order:6 Title:Matematik Hız Testi (Eylül 1.Hafta)
+  - [Fen Bilimleri] ID:2716 Order:6 Title:Fen Bilimleri Genel Tekrar (Eylül 1.Hafta)
+  - [Türkçe] ID:2996 Order:6 Title:Türkçe Hız Testi (Eylül 1.Hafta)
+  - [T.C. İnkılap Tarihi] ID:3276 Order:6 Title:İnkılap Tarihi Genel Tekrar (Eylül 1.Hafta)
+  - [Yabancı Dil] ID:3556 Order:6 Title:English Speed Test (Eylül 1.Hafta)
+  - [Din Kültürü] ID:3836 Order:6 Title:Din Bilgisi Genel Tekrar (Eylül 1.Hafta)
+
+Potential Next Week: (9, 2)
+
+TASKS FOR TODAY (2026-02-05):
+  ID:14035 | TopicID:2430 | Subj:Matematik | Status:done | Title:Pozitif Tam Sayıların Çarpanları (Eylül 1.Hafta)
+  ID:14036 | TopicID:2710 | Subj:Fen Bilimleri | Status:pending | Title:Mevsimlerin Oluşumu (Eylül 1.Hafta) (Pekiştirme)
+  ID:14037 | TopicID:2990 | Subj:Türkçe | Status:pending | Title:Paragraf Yorumlama (Eylül 1.Hafta) (Pekiştirme)
+  ID:14038 | TopicID:3270 | Subj:T.C. İnkılap Tarihi | Status:pending | Title:Kronolojik Analiz Becerisi (Eylül 1.Hafta) (Pekiştirme)
+  ID:14039 | TopicID:3550 | Subj:Yabancı Dil | Status:pending | Title:Vocabulary Builder (Eylül 1.Hafta) (Pekiştirme)
+  ID:14040 | TopicID:3830 | Subj:Din Kültürü | Status:pending | Title:Kader İnancı (Eylül 1.Hafta) (Pekiştirme)

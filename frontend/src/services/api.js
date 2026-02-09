@@ -110,5 +110,50 @@ export const api = {
         });
         if (!res.ok) throw new Error('Failed to get coach status');
         return res.json();
+    },
+
+    // Curriculum
+    getCurriculum: async (subject = 'matematik') => {
+        const res = await fetch(`${BASE_URL}/coaching/curriculum/?view=tree&subject=${subject}`, {
+            headers: getHeaders(),
+        });
+        if (!res.ok) throw new Error('Failed to fetch curriculum');
+        return res.json();
+    },
+
+    // Admin / CRUD
+    getTopics: async () => {
+        const res = await fetch(`${BASE_URL}/coaching/curriculum/`, {
+            headers: getHeaders(),
+        });
+        return res.json();
+    },
+
+    createTopic: async (data) => {
+        const res = await fetch(`${BASE_URL}/coaching/curriculum/`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error('Failed to create topic');
+        return res.json();
+    },
+
+    deleteTopic: async (id) => {
+        const res = await fetch(`${BASE_URL}/coaching/curriculum/${id}/`, {
+            method: 'DELETE',
+            headers: getHeaders(),
+        });
+        if (!res.ok) throw new Error('Failed to delete topic');
+        return true;
+    },
+
+    toggleTopic: async (topicId) => {
+        const res = await fetch(`${BASE_URL}/coaching/curriculum/${topicId}/toggle/`, {
+            method: 'POST',
+            headers: getHeaders(),
+        });
+        if (!res.ok) throw new Error('Failed to update topic');
+        return res.json();
     }
 };

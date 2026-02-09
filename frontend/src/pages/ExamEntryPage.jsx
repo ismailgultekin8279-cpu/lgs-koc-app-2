@@ -57,19 +57,31 @@ export default function ExamEntryPage() {
         }
 
         try {
-            // Prepare payload for Bulk Upsert
-            const resultsPayload = LGS_SUBJECTS.map(sub => {
-                const current = results[sub.id];
-                const correct = parseInt(current.correct) || 0;
-                const wrong = parseInt(current.wrong) || 0;
+            // Prepare payload for Bulk Upsert - FILTER EMPTY ENTRIES
+            const resultsPayload = LGS_SUBJECTS
+                .filter(sub => {
+                    const current = results[sub.id];
+                    // Skip if BOTH fields are completely empty (Student didn't enter this subject)
+                    return current.correct !== '' || current.wrong !== '';
+                })
+                .map(sub => {
+                    const current = results[sub.id];
+                    const correct = parseInt(current.correct) || 0;
+                    const wrong = parseInt(current.wrong) || 0;
 
-                return {
-                    subject: sub.label,
-                    correct: correct,
-                    wrong: wrong,
-                    blank: sub.questions - correct - wrong
-                };
-            });
+                    return {
+                        subject: sub.label,
+                        correct: correct,
+                        wrong: wrong,
+                        blank: sub.questions - correct - wrong
+                    };
+                });
+
+            if (resultsPayload.length === 0) {
+                setStatus('error');
+                alert('Lütfen en az bir ders sonucu giriniz.');
+                return;
+            }
 
             const payload = {
                 student: student.id,

@@ -1,0 +1,136 @@
+{
+    "grade": 8,
+    "lesson": "Matematik",
+    "months": [
+        {
+            "id": "sep",
+            "name": "Eylül",
+            "weeks": [
+                {
+                    "week_number": 1,
+                    "focus": "Çarpanlar ve Katlar",
+                    "topics": [
+                        {
+                            "id": "m1w1t1",
+                            "title": "Pozitif Tam Sayıların Çarpanları",
+                            "status": "completed"
+                        },
+                        {
+                            "id": "m1w1t2",
+                            "title": "Asal Çarpanlara Ayırma",
+                            "status": "completed"
+                        }
+                    ]
+                },
+                {
+                    "week_number": 2,
+                    "focus": "EBOB - EKOK",
+                    "topics": [
+                        {
+                            "id": "m1w2t1",
+                            "title": "En Büyük Ortak Bölen (EBOB)",
+                            "status": "completed"
+                        },
+                        {
+                            "id": "m1w2t2",
+                            "title": "En Küçük Ortak Kat (EKOK)",
+                            "status": "pending"
+                        }
+                    ]
+                },
+                {
+                    "week_number": 3,
+                    "focus": "EBOB - EKOK Problemleri",
+                    "topics": [
+                        {
+                            "id": "m1w3t1",
+                            "title": "EBOB Problemleri",
+                            "status": "pending"
+                        },
+                        {
+                            "id": "m1w3t2",
+                            "title": "EKOK Problemleri",
+                            "status": "pending"
+                        }
+                    ]
+                },
+                {
+                    "week_number": 4,
+                    "focus": "Aralarında Asal Sayılar",
+                    "topics": [
+                        {
+                            "id": "m1w4t1",
+                            "title": "Aralarında Asal Olma Kuralı",
+                            "status": "pending"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "oct",
+            "name": "Ekim",
+            "weeks": [
+                {
+                    "week_number": 1,
+                    "focus": "Üslü İfadeler",
+                    "topics": [
+                        {
+                            "id": "m2w1t1",
+                            "title": "Tam Sayıların Tam Sayı Kuvvetleri",
+                            "status": "pending"
+                        },
+                        {
+                            "id": "m2w1t2",
+                            "title": "Üslü İfadelerle İlgili Temel Kurallar",
+                            "status": "pending"
+                        }
+                    ]
+                },
+                {
+                    "week_number": 2,
+                    "focus": "Üslü Denklemler",
+                    "topics": [
+                        {
+                            "id": "m2w2t1",
+                            "title": "Üslü İfadelerde Çarpma ve Bölme",
+                            "status": "pending"
+                        }
+                    ]
+                },
+                {
+                    "week_number": 3,
+                    "focus": "Ondalık Gösterim",
+                    "topics": [
+                        {
+                            "id": "m2w3t1",
+                            "title": "Sayıların Ondalık Gösterimi",
+                            "status": "pending"
+                        },
+                        {
+                            "id": "m2w3t2",
+                            "title": "Çözümleme",
+                            "status": "pending"
+                        }
+                    ]
+                },
+                {
+                    "week_number": 4,
+                    "focus": "Bilimsel Gösterim",
+                    "topics": [
+                        {
+                            "id": "m2w4t1",
+                            "title": "Çok Büyük ve Çok Küçük Sayılar",
+                            "status": "pending"
+                        },
+                        {
+                            "id": "m2w4t2",
+                            "title": "Bilimsel Gösterim",
+                            "status": "pending"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.views.decorators.http import require_GET
 
 from .models import Student, Session, BehaviorLog, ExamResult, StudyTask
-from .serializers import StudentSerializer, StudyTaskSerializer, ExamResultSerializer
+from coaching.models import Topic, StudentProgress
 from .serializers import StudentSerializer, StudyTaskSerializer, ExamResultSerializer
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -80,17 +80,134 @@ class StudyTaskViewSet(viewsets.ModelViewSet):
             
         return qs
 
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        if 'status' in serializer.validated_data:
+            is_done = (instance.status == 'done')
+            self._sync_to_curriculum(instance, is_done)
+
+    def _sync_to_curriculum(self, task, is_completed_sync):
+        # 0. DIRECT MATCH BY ID (Superior logic)
+        matched_topic = None
+        if task.topic_id:
+            try:
+                matched_topic = Topic.objects.get(id=task.topic_id)
+            except Topic.DoesNotExist:
+                print(f"DEBUG SYNC: TOPIC ID {task.topic_id} NOT FOUND. Falling back to string match.")
+
+        if not matched_topic:
+            # Clean the Task Topic Name
+            clean_name = task.topic_name
+            
+            # 1. Remove Subject Prefix if exists
+            if " - " in clean_name:
+                clean_name = clean_name.split(" - ", 1)[1]
+            
+            # 2. Remove Parenthetical suffixes (e.g. (9. Ay, 1. Hafta) or (Pekiştirme))
+            import re
+            # More aggressive regex to catch various formats
+            clean_name = re.sub(r'\(.*?\)', '', clean_name).strip()
+
+            # 3. Helper to normalize string (Extreme Turkish handling)
+            def normalize(text):
+                if not text: return ""
+                # Handle dots/punctuation first
+                text = text.replace(".", "").replace(",", "").replace("-", "").replace(":", "")
+                text = text.lower()
+                # Turkish specific mapping
+                replacements = {
+                    'ı': 'i', 'ğ': 'g', 'ü': 'u', 'ş': 's', 'ö': 'o', 'ç': 'c', 
+                    'İ': 'i', 'Ğ': 'g', 'Ü': 'u', 'Ş': 's', 'Ö': 'o', 'Ç': 'c'
+                }
+                for old, new in replacements.items():
+                    text = text.replace(old, new)
+                # Remove all whitespace
+                return "".join(c for c in text if c.isalnum())
+
+            norm_task = normalize(clean_name)
+            
+            # 4. Handle Subject Names & Aliases
+            subject_name = task.subject
+            aliases = {
+                "İngilizce": "Yabancı Dil",
+                "İnkılap": "T.C. İnkılap Tarihi",
+                "Fen": "Fen Bilimleri",
+                "TC İnkılap": "T.C. İnkılap Tarihi",
+                "Din": "Din Kültürü",
+            }
+            subject_name = aliases.get(subject_name, subject_name)
+            norm_subj = normalize(subject_name)
+
+            # 5. Get All Topics and try to match (Stripping suffixes from Topics too!)
+            all_topics = Topic.objects.all()
+            
+            # Get student's current active scope for better matching
+            try:
+                config = task.student.coaching_config
+                active_m = config.current_academic_month
+                active_w = config.current_academic_week
+            except:
+                active_m, active_w = None, None
+
+            # PASS 1: Try to match within the ACTIVE Month/Week first (Kusursuz logic)
+            if active_m and active_w:
+                for topic in all_topics:
+                    if topic.month == active_m and topic.week == active_w:
+                        if normalize(topic.subject.name) == norm_subj:
+                            clean_topic_title = re.sub(r'\(.*?\)', '', topic.title).strip()
+                            if normalize(clean_topic_title) == norm_task:
+                                matched_topic = topic
+                                break
+            
+            # PASS 2: Global match if PASS 1 failed (Backward compatibility)
+            if not matched_topic:
+                for topic in all_topics:
+                    if normalize(topic.subject.name) == norm_subj:
+                        clean_topic_title = re.sub(r'\(.*?\)', '', topic.title).strip()
+                        if normalize(clean_topic_title) == norm_task:
+                            matched_topic = topic
+                            break
+            
+            # Substring fallback
+            if not matched_topic:
+                 for topic in all_topics:
+                    if normalize(topic.subject.name) == norm_subj:
+                        norm_topic = normalize(topic.title)
+                        if len(norm_task) > 8 and len(norm_topic) > 8:
+                            if norm_task in norm_topic or norm_topic in norm_task:
+                                matched_topic = topic
+                                break
+        
+        if matched_topic:
+            print(f"DEBUG SYNC: Matched '{task.topic_name}' -> Topic ID {matched_topic.id} ({matched_topic.title})")
+            StudentProgress.objects.update_or_create(
+                    student=task.student, 
+                    topic=matched_topic,
+                    defaults={
+                        'is_completed': is_completed_sync,
+                        'completed_at': timezone.now() if is_completed_sync else None
+                    }
+            )
+        else:
+            print(f"DEBUG SYNC: FAILED to match '{task.topic_name}' (Subject: {task.subject}, NormSubj: {norm_subj}, NormTask: {norm_task})")
+
     @action(detail=True, methods=['post'])
     def toggle_status(self, request, pk=None):
         task = self.get_object()
+        
+        # Toggle
         if task.status == 'done':
             task.status = 'pending'
             task.completed_at = None
+            is_done = False
         else:
             task.status = 'done'
             task.completed_at = timezone.now()
-        
+            is_done = True
+            
         task.save()
+        self._sync_to_curriculum(task, is_done)
+        
         return Response(self.get_serializer(task).data)
 
 class ExamResultViewSet(viewsets.ModelViewSet):

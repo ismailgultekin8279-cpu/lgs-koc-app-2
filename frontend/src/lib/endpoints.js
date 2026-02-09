@@ -22,11 +22,13 @@ export function patchStudent(studentId, payload) {
 }
 
 /* ---------------- Daily Plan ---------------- */
-export function getDailyPlan(studentId) {
-  // Use the standard task filtering endpoint
-  // Takes query params: student (ID) and optional date
+export function getDailyPlan(studentId, { includeUpcoming = true } = {}) {
   const today = new Date().toISOString().split('T')[0];
-  // Adding /v1 prefix as per api.js pattern
+  if (includeUpcoming) {
+    // Return all upcoming tasks for the student (usually the 7-day plan)
+    // Sorted by date on backend or frontend
+    return apiGet(`/students/tasks/?student=${studentId}`);
+  }
   return apiGet(`/students/tasks/?student=${studentId}&date=${today}`);
 }
 
@@ -39,6 +41,10 @@ export function patchTask(taskId, payload) {
 export function getCoaching(studentId) {
   // Use the working endpoint from api.js logic
   return apiGet(`/coaching/coach/${studentId}/status/`);
+}
+
+export function generatePlan(studentId) {
+  return apiPost(`/coaching/coach/${studentId}/generate_plan/`, {});
 }
 
 /* ---------------- Exam Results ---------------- */

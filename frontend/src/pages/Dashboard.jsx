@@ -32,6 +32,9 @@ export default function Dashboard() {
     const [todaysTasks, setTodaysTasks] = useState([]);
     const [coachMessage, setCoachMessage] = useState(null);
     const [examHistory, setExamHistory] = useState([]);
+    const [latestScore, setLatestScore] = useState(0);
+
+    const [isUpdating, setIsUpdating] = useState(false);
 
     useEffect(() => {
         if (student?.id) {
@@ -51,6 +54,18 @@ export default function Dashboard() {
 
                 const totalNet = latestExamSubjects.reduce((sum, sub) => sum + (parseFloat(sub.net) || 0), 0);
                 setLatestNet(totalNet.toFixed(2));
+
+                // REALIST LGS SCORING ENGINE (Approximation based on coefficients)
+                const mainSubjs = ["Matematik", "Fen Bilimleri", "Türkçe"];
+                let weightedNet = 0;
+                latestExamSubjects.forEach(s => {
+                    const coef = mainSubjs.includes(s.subject) ? 4.3 : 1.3;
+                    weightedNet += (parseFloat(s.net) || 0) * coef;
+                });
+
+                // LGS Base Score is approx 194. Let's use 200 as midpoint. Max weighted net approx 300.
+                const estimatedScore = Math.min(500, Math.round(195 + (weightedNet * 0.95)));
+                setLatestScore(estimatedScore);
 
                 // Simple trend logic
                 setNetTrend("Son deneme sonucu");
@@ -77,7 +92,13 @@ export default function Dashboard() {
 
             // 3. Coach Status
             const status = await api.getCoachStatus(student.id);
-            if (status?.weaknesses && status.weaknesses.length > 0) {
+            if (status?.message) {
+                setCoachMessage({
+                    title: "Koç'un Tavsiyesi",
+                    text: status.message,
+                    action: "Programa Git"
+                });
+            } else if (status?.weaknesses && status.weaknesses.length > 0) {
                 setCoachMessage({
                     title: "Gelişim Fırsatı",
                     text: `Son analizlerimde ${status.weaknesses[0]} dersinde zorlandığını görüyorum. Senin için bugünkü programa ekstra pratik ekledim.`,
@@ -93,6 +114,8 @@ export default function Dashboard() {
 
         } catch (err) {
             console.error(err);
+        } finally {
+            setIsUpdating(false);
         }
     };
 
@@ -108,8 +131,8 @@ export default function Dashboard() {
                     icon={Target}
                     label="Hedef Puan"
                     value={student?.target_score || '---'}
-                    // Estimate Score based on Net (Approx 1 net = 4.0 points + base 100-200) - Simplified for visual
-                    trend={`Hedefe %${student?.target_score > 0 ? Math.min(100, Math.round(((parseFloat(latestNet) * 4.2 + 150) / student.target_score) * 100)) : 0} Ulaşıldı`}
+                    // Higher realism: Progress is (Estimated Score / Target Score)
+                    trend={`Hedefe %${student?.target_score > 0 ? Math.min(100, Math.round((latestScore / student.target_score) * 100)) : 0} Ulaşıldı`}
                     trendUp={true}
                     color="bg-purple-600"
                 />
@@ -134,9 +157,42 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Today's Tasks */}
                 <div className="glass-card p-6">
-                    <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-lg font-bold text-slate-900">Bugünün Programı</h3>
-                        <button className="text-sm font-medium text-blue-600 hover:text-blue-700">Tümünü Gör</button>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                        <div className="flex items-center gap-3">
+                            <h3 className="text-lg font-bold text-slate-900">Bugünün Programı</h3>
+                            <button
+                                onClick={async (e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    if (isUpdating) return;
+                                    setIsUpdating(true);
+                                    try {
+                                        await api.generatePlan(student.id);
+                                        await fetchStats();
+                                        alert("Program başarıyla güncellendi! 🚀");
+                                    } catch (err) {
+                                        alert("Güncellenemedi: " + err.message);
+                                        setIsUpdating(false);
+                                    }
+                                }}
+                                disabled={isUpdating}
+                                className={`text-[11px] font-bold px-4 py-2 rounded-2xl transition-all shadow-md flex items-center gap-2 ${isUpdating
+                                    ? 'bg-slate-200 text-slate-500 cursor-not-allowed scale-95'
+                                    : 'bg-indigo-600 text-white hover:bg-indigo-700 active:scale-90 hover:shadow-indigo-500/20'
+                                    }`}
+                            >
+                                {isUpdating ? (
+                                    <>
+                                        <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                        <span>Güncelleniyor...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span>🔄 Programı Güncelle</span>
+                                    </>
+                                )}
+                            </button>
+                        </div>
                     </div>
 
                     <div className="space-y-4">
@@ -179,9 +235,12 @@ export default function Dashboard() {
                                         }`}>
                                         {task.status === 'done' && <CheckCircle2 size={16} />}
                                     </div>
-                                    <div>
-                                        <p className={`font-semibold ${task.status === 'done' ? 'text-slate-500 line-through' : 'text-slate-800'}`}>
-                                            {task.topic_name || task.subject}
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-[10px] font-bold uppercase tracking-wider text-blue-600 mb-0.5 opacity-80">
+                                            {task.subject}
+                                        </p>
+                                        <p className={`font-semibold truncate ${task.status === 'done' ? 'text-slate-500 line-through' : 'text-slate-800'}`}>
+                                            {task.topic_name || "Genel Çalışma"}
                                         </p>
                                         <p className="text-xs text-slate-500">{task.question_count} Soru • {Math.round(task.recommended_seconds / 60)} Dakika</p>
                                     </div>

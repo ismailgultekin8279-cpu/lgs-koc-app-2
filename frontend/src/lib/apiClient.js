@@ -1,4 +1,4 @@
-const API_BASE = "https://lgs-backend-wl8r.onrender.com/api/v1";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api/v1";
 
 /**
  * Small helper to create a user-friendly error without leaking raw debug JSON to UI.
@@ -39,11 +39,19 @@ export async function apiFetch(path, options = {}) {
     else signal.addEventListener("abort", () => controller.abort(), { once: true });
   }
 
+  // Inject Auth Token
+  const token = localStorage.getItem('access_token');
+  const authHeaders = {};
+  if (token) {
+    authHeaders['Authorization'] = `Bearer ${token}`;
+  }
+
   try {
     const res = await fetch(url, {
       method,
       headers: {
         Accept: "application/json",
+        ...authHeaders,
         ...headers,
       },
       body,

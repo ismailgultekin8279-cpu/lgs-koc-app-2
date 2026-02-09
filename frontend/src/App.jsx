@@ -8,6 +8,8 @@ import OnboardingPage from './pages/OnboardingPage';
 import ExamEntryPage from './pages/ExamEntryPage';
 import ExamResultsPage from './pages/ExamResultsPage';
 import SettingsPage from './pages/SettingsPage';
+import CurriculumPage from './pages/CurriculumPage';
+import CurriculumAdminPage from './pages/CurriculumAdminPage';
 import Layout from './components/layout/Layout';
 
 // Layout wrapper to adapt 'children' prop to 'Outlet' pattern
@@ -36,6 +38,8 @@ function App() {
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/exams" element={<ExamEntryPage />} />
           <Route path="/analytics" element={<ExamResultsPage />} />
+          <Route path="/curriculum" element={<CurriculumPage />} />
+          <Route path="/admin/curriculum" element={<CurriculumAdminPage />} />
           <Route path="/settings" element={<SettingsPage />} />
 
           {/* Legacy/Duplicate Routes Handling */}

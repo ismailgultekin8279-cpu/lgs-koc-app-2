@@ -27,6 +27,7 @@ export default function Layout({ children }) {
   const navItems = [
     { label: 'Dashboard', path: '/', icon: LayoutDashboard },
     { label: 'Günlük Plan', path: '/plan', icon: BookOpen },
+    { label: 'Müfredat Takip', path: '/curriculum', icon: BookOpen },
     { label: 'Deneme Sınavları', path: '/exams', icon: GraduationCap },
     { label: 'Gelişim Analizi', path: '/analytics', icon: TrendingUp },
     { label: 'Ayarlar', path: '/settings', icon: Settings },

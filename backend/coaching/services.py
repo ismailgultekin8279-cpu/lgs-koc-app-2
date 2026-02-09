@@ -15,10 +15,7 @@ class CoachingService:
         if target_date is None:
             target_date = date.today()
             
-        # 1. Clear existing plan for this date to allow regeneration with latest data
-        StudyTask.objects.filter(student=self.student, date=target_date).delete()
-
-        # 2. Gather Context for AI
+        # 1. Gather Context for AI
         weak_subjects = self._analyze_weaknesses()
         recent_exams = ExamResult.objects.filter(student_id=self.student.id).order_by('-exam_date')[:3]
         
@@ -46,15 +43,20 @@ class CoachingService:
         
         # 3. Call AI
         # Bypass Real AI to ensure consistent task generation with our fixed proxy logic
-        # from .ai_service import AICoachingService
-        # ai_service = AICoachingService(self.student)
-        # real_ai_tasks = ai_service.generate_plan(context, target_date)
+        # 3. Call AI
+        # Bypass Real AI to ensure consistent task generation with our fixed proxy logic
+        from .ai_service import AICoachingService
+        ai_service = AICoachingService(self.student)
         
-        # if real_ai_tasks:
-        #     return real_ai_tasks
-            
-        # Fallback to Rule-based Proxy (Always use this for now)
-        return self._generate_ai_plan_proxy(target_date, context)
+        real_ai_tasks = ai_service.generate_plan(context, target_date)
+        
+        if real_ai_tasks is not None:
+             return real_ai_tasks
+             
+        # If AI returns None, something is wrong. Return empty list or fallback explicitly.
+        # return self._generate_ai_plan_proxy(target_date, context)
+        print("DEBUG: AI Service returned None. Returning empty list to debug.")
+        return []
 
     def _generate_ai_plan_proxy(self, target_date, context):
         """
@@ -168,43 +170,8 @@ class CoachingService:
 
     def _analyze_weaknesses(self):
         """
-        Returns a list of subject names where the student is underperforming.
-        Prioritizes the LATEST exam result. 
-        Returns UNIQUE subjects, sorted by lowest success rate first.
+        Delegates to AICoachingService for standardized intelligence.
         """
-        # 1. Check LATEST exam specifically
-        latest_exams = ExamResult.objects.filter(
-            student_id=self.student.id
-        ).order_by('-exam_date', '-id')
-        
-        if not latest_exams.exists():
-            return []
-            
-        # Get the date of the very last exam entry
-        latest_date = latest_exams.first().exam_date
-        
-        # Get all results for that specific date, ensuring we verify LATEST first
-        todays_results = latest_exams.filter(exam_date=latest_date).order_by('-id')
-        
-        # List of tuples: (subject_name, success_rate)
-        weak_subjects_data = []
-        seen_subjects = set()
-        
-        for exam in todays_results:
-            if exam.subject in seen_subjects:
-                continue
-                
-            total_q = exam.correct + exam.wrong + exam.blank
-            if total_q > 0:
-                # Calculate success percentage
-                success_rate = (exam.correct / total_q) * 100
-                
-                # If success rate is below 60% (e.g. < 12/20 correct), mark as weak
-                if success_rate < 60:
-                     weak_subjects_data.append({'subject': exam.subject, 'rate': success_rate})
-                     seen_subjects.add(exam.subject)
-        
-        # Sort by rate ascending (worst first)
-        weak_subjects_data.sort(key=lambda x: x['rate'])
-        
-        return [item['subject'] for item in weak_subjects_data]
+        from .ai_service import AICoachingService
+        ai_svc = AICoachingService(self.student)
+        return ai_svc.get_critical_subjects()
