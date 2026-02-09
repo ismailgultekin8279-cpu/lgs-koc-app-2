@@ -124,7 +124,7 @@ export default function Dashboard() {
             <div className="mb-8">
                 <h1 className="text-3xl font-bold text-slate-900 flex items-center gap-3">
                     Hoş geldin, {student?.full_name || 'Öğrenci'}! 👋
-                    <span className="text-xs font-normal text-slate-400 bg-slate-100 px-2 py-1 rounded-full">v2.0.1</span>
+                    <span className="text-xs font-bold text-blue-600 bg-blue-100 px-3 py-1 rounded-full border border-blue-200 shadow-sm animate-pulse">v2.0.2 (HAZIR)</span>
                 </h1>
                 <p className="text-slate-500 mt-2">Bugünün hedeflerini tamamla ve hedefine bir adım daha yaklaş.</p>
             </div>
