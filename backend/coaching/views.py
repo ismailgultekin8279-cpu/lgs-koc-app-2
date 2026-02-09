@@ -49,7 +49,7 @@ class CoachingViewSet(viewsets.GenericViewSet):
         weights = ai_svc._calculate_subject_weights()
         critical_subjects = ai_svc.get_critical_subjects()
 
-        is_generic = any(word in (ai_msg or "").lower() for word in ["harika", "gidiyorsun", "devam et", "rotasyonuyla", "unurma", "durumda değil"])
+        is_generic = any(word in (ai_msg or "").lower() for word in ["harika", "gidiyorsun", "devam et", "rotasyonuyla", "unurma", "durumda değil", "odaklanalım"])
         
         if critical_subjects and (not ai_msg or is_generic):
             # Dynamic Crisis Message (Real-time)

@@ -50,13 +50,11 @@ class CoachingService:
         
         real_ai_tasks = ai_service.generate_plan(context, target_date)
         
-        if real_ai_tasks is not None:
+        if real_ai_tasks:
              return real_ai_tasks
              
-        # If AI returns None, something is wrong. Return empty list or fallback explicitly.
-        # return self._generate_ai_plan_proxy(target_date, context)
-        print("DEBUG: AI Service returned None. Returning empty list to debug.")
-        return []
+        # Emergency Fallback 
+        return ai_service._generate_fallback_response(context, target_date)
 
     def _generate_ai_plan_proxy(self, target_date, context):
         """
