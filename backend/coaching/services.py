@@ -122,12 +122,12 @@ class CoachingService:
         # But ensure we don't duplicate logic. Ideally priority_queue is unique.
         
         current_count = len(final_selection)
-        target_total = max(current_count + 2, 6) # At least 6 tasks total
+        target_total = 3 # STRICT 2+1 FOR EXPERT REVIEW
         
         for item in priority_queue:
             subj, mode = item
             if mode == "focus_weakness":
-                continue # Already added
+                continue # Already handled in specialized logic if needed, but here we fill
             
             if len(final_selection) < target_total:
                 final_selection.append(item)
